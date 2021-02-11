@@ -13,15 +13,22 @@ background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(64,79,189,0.524247198
 
 .select-country{
   margin-top: 50px;
-  margin-left: 450px;
+  margin-left: 250px;
   padding: 15px;
   border-radius: 15px;
   border: none;
   outline: blue;
+  font-size: 20px;
 }
 
-.select-country optionp{
+.select-country option p{
   font-size: 50px;
+}
+
+.mazhab{
+  padding: 15px 45px;
+  font-size: 20px;
+  border-radius: 15px;
 }
 
 

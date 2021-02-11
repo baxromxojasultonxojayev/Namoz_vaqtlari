@@ -4,7 +4,7 @@ let peshinSelect = document.querySelector('.Peshin')
 let asrSelect = document.querySelector('.Asr')
 let ShomSelect = document.querySelector('.Shom')
 let XuftonSelect = document.querySelector('.Xufton')
-
+let mazhabSelect = document.querySelector('.mazhab')
 
 
 
@@ -25,13 +25,22 @@ getCountries()
 
 selectCountry.addEventListener('change', event =>{
   let value = selectCountry.value.split('/')
+  let mazhab = mazhabSelect.value
   let country = value[0]
   let capital = value[1]
-  getNamozTime( capital, country);
+  getNamozTime( capital, country, mazhab);
 })
 
-async function getNamozTime(capital, country){
-  let preyingTime = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${capital}&country=${country}&method=8&school=1`)
+mazhabSelect.addEventListener('change', event =>{
+  let value = selectCountry.value.split('/')
+  let mazhab = mazhabSelect.value
+  let country = value[0]
+  let capital = value[1]
+  getNamozTime( capital, country, mazhab);
+})
+
+async function getNamozTime(capital, country, mazhab){
+  let preyingTime = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${capital}&country=${country}&method=8&school=${mazhab}`)
   preyingTime = await preyingTime.json()
   for(let time in preyingTime.data.timings){
     bomdodSelect.textContent = preyingTime.data.timings.Fajr
