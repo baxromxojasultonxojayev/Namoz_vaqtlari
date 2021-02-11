@@ -1,40 +1,45 @@
+let selectCountry = document.querySelector('.select-country')
+let bomdodSelect = document.querySelector('.Bomdod')
+let peshinSelect = document.querySelector('.Peshin')
+let asrSelect = document.querySelector('.Asr')
+let ShomSelect = document.querySelector('.Shom')
+let XuftonSelect = document.querySelector('.Xufton')
 
 
-let buttonFormELement = document.querySelector('.form-button')
-let inputCitytElement = document.querySelector('.city')
-let inputCountryElement = document.querySelector('.country')
-let selectSchool = document.querySelector('.school-select')
-let namozlist = document.querySelector('.namoz-list')
 
-// buttonFormELement.addEventListener('submit', function(event){
-//   // event.preventDefault()
-//   let inputCityValue = inputCitytElement.value;
-//   let inputCountryValue = inputCountryElement.value;
-//   let selectSchoolValue = selectSchool.value
 
-//   let taqvim = blocking(inputCityValue,inputCountryValue,selectSchoolValue)
-//   Taqvim(taqvim)
-// })
-
-// function Taqvim(arr){
-//   if(arr.length){
-//     for(let item of arr){
-//       let newELementLi = documnet.createElement('li')
-//       newELementLi.textContent = item
-//       namozlist.appendChild(newELementLi)
-//     }
-//   }
-// }
-
-async function blocking(inputCityt,inputCountry, selectSchools){
-  let response = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${inputCityt}&country=${inputCountry}&school=${selectSchools}`)
-  response = await response.json()
-  
-  for( let vaqt in response.data.timings){
-      console.log(vaqt, response.data.timings[vaqt]);
-    }
-    
-  console.log(response);
+async function getCountries(){
+  let searchBy = await fetch("https://restcountries.eu/rest/v2/all")
+  searchBy = await searchBy.json()
+  // console.log(searchBy); 
+  searchBy.forEach(country => {
+    let optionElement = document.createElement('option');
+    optionElement.setAttribute('value', `${country.name} / ${country.capital}`)
+    optionElement.textContent = `${country.name} / ${country.capital}`
+    selectCountry.appendChild(optionElement)
+    // console.log(country.name)
+  }); 
 }
 
-blocking('tashkent','uzbekistan',1)
+getCountries()
+
+selectCountry.addEventListener('change', event =>{
+  let value = selectCountry.value.split('/')
+  let country = value[0]
+  let capital = value[1]
+  getNamozTime( capital, country);
+})
+
+async function getNamozTime(capital, country){
+  let preyingTime = await fetch(`http://api.aladhan.com/v1/timingsByCity?city=${capital}&country=${country}&method=8&school=1`)
+  preyingTime = await preyingTime.json()
+  for(let time in preyingTime.data.timings){
+    bomdodSelect.textContent = preyingTime.data.timings.Fajr
+    peshinSelect.textContent = preyingTime.data.timings.Dhuhr
+    asrSelect.textContent = preyingTime.data.timings.Asr
+    ShomSelect.textContent = preyingTime.data.timings.Maghrib
+    XuftonSelect.textContent = preyingTime.data.timings.Isha
+    // console.log(time, preyingTime.data.timings[time]);
+  }
+  // console.log(preyingTime);
+} 
